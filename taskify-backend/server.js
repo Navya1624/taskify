@@ -1,4 +1,5 @@
 import authenticationRoutes from "./routes/authentication.js";
+import DailyTaskRoutes from "./routes/dailyTasks.js"
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -18,6 +19,7 @@ mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch(err => console.log("MongoDB connection error:",err));
 
 app.use('/api/auth',authenticationRoutes);
+app.use('/api/dailyTasks',DailyTaskRoutes);
 
 app.listen(PORT,()=> {
     console.log(`Server running on port ${PORT}`);
