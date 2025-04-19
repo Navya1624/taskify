@@ -30,7 +30,7 @@ router.post("/signup",async(req,res)=>{
 
         console.log("User Created: ", user);
 
-        const token = jwt.sign({id: user._id}, "Your _jwt_ secret",{
+        const token = jwt.sign({id: user._id}, JWT_SECRET,{
             expiresIn: "2h"
         }) 
         res.status(201).json({ user, token });
@@ -60,7 +60,7 @@ router.post("/signin",async(req,res) => {
 
         const token = jwt.sign(
             { id: user._id, email: user.email },
-            "Your _jwt_ secret", // Use environment variable for secret
+            JWT_SECRET, // Use environment variable for secret
             { expiresIn: "1d" }
         );
         res.status(200).json({

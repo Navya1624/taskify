@@ -29,5 +29,5 @@ const dailyTaskSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       }
-});
+},{ timestamps: true });
 export const DailyTask = mongoose.model("DailyTask", dailyTaskSchema);
