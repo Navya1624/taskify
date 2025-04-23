@@ -29,8 +29,7 @@ router.post("/signup",async(req,res)=>{
         await user.save();
 
         console.log("User Created: ", user);
-
-        const token = jwt.sign({id: user._id}, JWT_SECRET,{
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET,{
             expiresIn: "2h"
         }) 
         res.status(201).json({ user, token });
@@ -60,9 +59,14 @@ router.post("/signin",async(req,res) => {
 
         const token = jwt.sign(
             { id: user._id, email: user.email },
-            JWT_SECRET, // Use environment variable for secret
+            process.env.JWT_SECRET, // Use environment variable for secret
             { expiresIn: "1d" }
         );
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false, // true if HTTPS
+            sameSite: "Lax", // or "Strict" or "None" (cross-site use)
+          });
         res.status(200).json({
             message: "Sign in successful",
             token,

@@ -1,5 +1,6 @@
 import authenticationRoutes from "./routes/authentication.js";
 import DailyTaskRoutes from "./routes/dailyTasks.js"
+import cookieParser from "cookie-parser";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -11,8 +12,12 @@ const app=express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URL = process.env.MONGO_URL;
 
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000", // frontend origin
+    credentials: true,               // allow cookies to be sent
+  }));
 app.use(express.json());
+app.use(cookieParser());
 
 mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))

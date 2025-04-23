@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, TextField } from '@mui/material';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
 
-const token = localStorage.getItem('token');
-const decoded = jwtDecode(token);
-const userId = decoded.userId;
 
 const Tasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -15,7 +11,9 @@ const Tasks = () => {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/dailyTasks/:');
+                const response = await axios.get('http://localhost:5000/api/dailyTasks/tasks',{
+                    withCredentials: true,
+                  });
                 setTasks(response.data);
             } catch (error) {
                 console.error('Error fetching tasks:', error);
@@ -35,7 +33,11 @@ const Tasks = () => {
     const saveTask = async () => {
         try {
             {
-                const response = await axios.post('http://localhost:5000/api/dailyplanner/tasks', newTask);
+                const response = await axios.post('http://localhost:5000/api/dailyTasks/add', newTask,
+                    {
+                        withCredentials: true,
+                      }
+                );
                 setTasks([...tasks, response.data]);
             }
             setNewTask({ taskName: '', allottedTime: '', priority: '', status: '' });
@@ -63,8 +65,8 @@ const Tasks = () => {
 
     const deleteTask = async( task_id) => {
         try{
-            const response = await axios.delete(`http://localhost:5000/api/dailyplanner/tasks/${task_id}`);
-            //setTasks(tasks.filter((task) => task._id !== id));
+            const response = await axios.delete(`http://localhost:5000/api/dailyTasks/delete/${task_id}`);
+            setTasks((prevTasks) => prevTasks.filter((task) => task._id !== task_id));
             console.log('Task deleted successfully:', response.data);
         }catch(error){
             console.error('Error while deleting the tasks',error);

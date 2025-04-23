@@ -27,15 +27,18 @@ const Login = () => {
       const response = await axios.post('http://localhost:5000/api/auth/signin', {
         email: formData.email,
         password: formData.password
+      },
+      {
+        withCredentials: true, // <- This is key!
       });
 
       console.log("Signin successful:", response.data);
       alert("Signin successful!");
       navigate("/dashboard");
-      localStorage.setItem("token", response.data.token);
     } catch (error) {
       console.error("Error signing up:", error.response?.data || error.message);
       alert(error.response?.data|| "Signin failed!");
+      //if there is no account user will redirects to sign up
     }
   }
 

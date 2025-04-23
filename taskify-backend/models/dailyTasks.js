@@ -6,12 +6,11 @@ const dailyTaskSchema = new mongoose.Schema({
         ref: "User",
         required: true,
       },
-      title: {
+      taskName: {
         type: String,
         required: true,
       },
-      description: String,
-      time: {
+      allottedTime: {
         type: String, // Format: "HH:MM AM/PM"
         required: true,
       },
@@ -22,7 +21,7 @@ const dailyTaskSchema = new mongoose.Schema({
       },
       status: {
         type: String,
-        enum: ["Pending", "Progress" ,"Completed"],
+        enum: ["Pending", "In Progress" ,"Completed"],
         default: "Pending",
       },
       date: {

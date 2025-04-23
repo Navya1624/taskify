@@ -1,14 +1,16 @@
 import express from "express";
 import { DailyTask } from "../models/dailyTasks.js";
+import { authenticateToken } from "../middlewares/authMiddleware.js";
+
 const router = express.Router();
 
-router.post("/add",async(req,res)=>{
+router.post("/add",authenticateToken,async(req,res)=>{
     try{
-        const { userId, title, description, time, priority, status } = req.body;
-        if (!userId || !title || !time) {
+        const { taskName, allottedTime, priority, status } = req.body;
+        if (!taskName && !allottedTime ) {
             return res.status(400).send("User, Title, and Time are required");
         }
-        const task = new DailyTask({ userId, title, description, time, priority, status });
+        const task = new DailyTask({ userId: req.userId , taskName, allottedTime, priority, status });
         await task.save();
         res.status(201).json(task);
     } catch (err) {
@@ -25,10 +27,9 @@ router.delete("/delete/:taskId", async (req, res) => {
       res.status(500).send("Server error");
     }
   });
-  router.get("/:userId", async (req, res) => {
+  router.get("/tasks",authenticateToken, async (req, res) => {
     try {
-      const { userId } = req.params;
-      const tasks = await DailyTask.find({ userId }).sort({ date: -1 });
+      const tasks = await DailyTask.find({ userId: req.userId }).sort({ date: -1 });
       res.status(200).json(tasks);
     } catch (err) {
       res.status(500).send("Server error");
