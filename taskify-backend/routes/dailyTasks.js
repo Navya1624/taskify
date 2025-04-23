@@ -36,7 +36,7 @@ router.delete("/delete/:taskId", async (req, res) => {
     }
   });
 
-  router.put("/:taskId", async (req, res) => {
+  router.put("/edit/:taskId", async (req, res) => {
     try {
       const { taskId } = req.params;
       const updates = req.body;
