@@ -5,8 +5,10 @@ import axios from 'axios';
 
 const Tasks = () => {
     const [tasks, setTasks] = useState([]);
-    const [isEditing, setIsEditing] = useState(false); // Track if a new row is being edited
+    const [isAdding, setisAdding] = useState(false); // Track if a new row is being edited
     const [newTask, setNewTask] = useState({ taskName: '', allottedTime: '', priority: '', status: '' });
+    const [editingTaskId, setEditingTaskId] = useState(null);
+    const [editedTask, setEditedTask] = useState({});
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -24,44 +26,53 @@ const Tasks = () => {
 
     // Handle input changes in the editable row
     const handleInputChange = (e) => {
-      console.log(e);
         const { name, value } = e.target;
         setNewTask({ ...newTask, [name]: value });
     };
 
+    const handleEditChange = (e) => {
+        const { name, value } = e.target;
+        setEditedTask({ ...editedTask, [name]: value });
+      };
 
     const saveTask = async () => {
         try {
-            {
                 const response = await axios.post('http://localhost:5000/api/dailyTasks/add', newTask,
                     {
                         withCredentials: true,
                       }
                 );
-                setTasks([...tasks, response.data]);
-            }
+            setTasks([...tasks, response.data]);
             setNewTask({ taskName: '', allottedTime: '', priority: '', status: '' });
-            setIsEditing(false);
+            setisAdding(false);
 
         } catch (error) {
             console.error('Error saving task:', error);
         }
     };
+    const startEditing = (task) => {
+        setEditingTaskId(task._id);
+        setEditedTask(task);
+      };
 
+      const saveEditedTask = async () => {
+        try {
+          const response = await axios.put(
+            `http://localhost:5000/api/dailyTasks/edit/${editingTaskId}`,
+            editedTask,
+            { withCredentials: true }
+          );
+          setTasks(tasks.map((t) => (t._id === editingTaskId ? response.data : t)));
+          setEditingTaskId(null);
+          setEditedTask({});
+        } catch (error) {
+          console.error('Error updating task:', error);
+        }
+      };
     // Trigger new empty row for editing
     const addNewRow = () => {
-        setIsEditing(true);
+        setisAdding(true);
     };
-
-    const editTask = async(task_id) => {
-        setIsEditing(true);
-        try {
-            const change = await handleInputChange();
-            saveTask(task_id);
-        }catch(error){
-            console.error('Error saving task:', error);
-        }
-    }
 
     const deleteTask = async( task_id) => {
         try{
@@ -87,25 +98,73 @@ const Tasks = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {tasks.map((task, index) => (
-                            <TableRow key={index}>
-                                <TableCell>{task.taskName}</TableCell>
-                                <TableCell>{task.allottedTime}</TableCell>
-                                <TableCell>{task.priority}</TableCell>
-                                <TableCell>{task.status}</TableCell>
+                    {tasks.map((task) => (
+              <TableRow key={task._id}>
+                {editingTaskId === task._id ? (
+                  <>
+                    <TableCell>
+                      <TextField
+                        name="taskName"
+                        value={editedTask.taskName}
+                        onChange={handleEditChange}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        name="allottedTime"
+                        value={editedTask.allottedTime}
+                        onChange={handleEditChange}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <select
+                        name="priority"
+                        value={editedTask.priority}
+                        onChange={handleEditChange}
+                      >
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                      </select>
+                    </TableCell>
+                    <TableCell>
+                      <select
+                        name="status"
+                        value={editedTask.status}
+                        onChange={handleEditChange}
+                      >
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Pending">Pending</option>
+                      </select>
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="contained" onClick={saveEditedTask}>
+                        Save
+                      </Button>
+                    </TableCell>
+                  </>
+                ) :(
+                    <>
+                      <TableCell>{task.taskName}</TableCell>
+                      <TableCell>{task.allottedTime}</TableCell>
+                      <TableCell>{task.priority}</TableCell>
+                      <TableCell>{task.status}</TableCell>
+                      <TableCell>
+                        <Button variant="contained" color="info" onClick={() => startEditing(task)}>
+                          Edit
+                        </Button>{' '}
+                        <Button variant="contained" color="error" onClick={() => deleteTask(task._id)}>
+                          Delete
+                        </Button>
+                      </TableCell>
+                    </>
+                  )}
+                </TableRow>
+              ))}
+  
 
-                                <TableCell>
-                                    <Button variant="contained" color="info" onClick={() => editTask(task._id)} >
-                                        Edit
-                                    </Button>
-                                    <Button variant="contained" color="error" onClick={() => deleteTask(task._id)} >
-                                        Delete
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-
-                        {isEditing && (
+                        {isAdding && (
                             <TableRow>
                                 <TableCell>
                                     <TextField
@@ -160,7 +219,7 @@ const Tasks = () => {
                             </TableRow>
                         )}
 
-                        {!isEditing && (
+                        {!isAdding && editingTaskId === null &&(
                             <TableRow>
                                 <TableCell colSpan={5} align="center">
                                     <Button variant="contained" onClick={addNewRow}>
@@ -177,3 +236,4 @@ const Tasks = () => {
 };
 
 export default Tasks;
+
