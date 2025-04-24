@@ -18,7 +18,7 @@ router.post("/add",authenticateToken,async(req,res)=>{
         res.status(500).send("Server error");
     }
 })
-router.delete("/delete/:taskId", async (req, res) => {
+router.delete("/delete/:taskId",authenticateToken, async (req, res) => {
     try {
       const { taskId } = req.params;
       await DailyTask.findByIdAndDelete(taskId);
@@ -36,7 +36,7 @@ router.delete("/delete/:taskId", async (req, res) => {
     }
   });
 
-  router.put("/edit/:taskId", async (req, res) => {
+  router.put("/edit/:taskId", authenticateToken, async (req, res) => {
     try {
       const { taskId } = req.params;
       const updates = req.body;

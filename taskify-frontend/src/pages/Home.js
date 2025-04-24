@@ -5,7 +5,6 @@ import Tasks from './Tasks';
 const Home = () => {
   return (
     <>
-      <Navbar />
       <Tasks /> {/* Default home content */}
     </>
   );

@@ -3,6 +3,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieParser from "cookie-parser";
+import { authenticateToken } from "../middlewares/authMiddleware.js";
 
 const router=express.Router();
 router.use(cookieParser());
@@ -66,6 +67,7 @@ router.post("/signin",async(req,res) => {
             httpOnly: true,
             secure: false, // true if HTTPS
             sameSite: "Lax", // or "Strict" or "None" (cross-site use)
+            maxAge: 24 * 60 * 60 * 1000,
           });
         res.status(200).json({
             message: "Sign in successful",
@@ -82,6 +84,9 @@ router.post("/signin",async(req,res) => {
         res.status(500).send("Server error");
       }
 })
+router.get("/check",authenticateToken,(req,res)=>{
+    res.json({authenticated:true,userId:req.userId});
+});
 
 router.put("/forgotPassword", async (req, res) => {
     try {

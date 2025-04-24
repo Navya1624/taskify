@@ -20,7 +20,7 @@ const Navbar = () => {
           sx={{ flexGrow: 1, cursor: 'pointer' }}
           onClick={() => navigate('/')}
         >
-          TaskMaster
+          Taskify
         </Typography>
 
         <Box>

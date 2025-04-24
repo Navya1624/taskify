@@ -1,5 +1,6 @@
 import authenticationRoutes from "./routes/authentication.js";
-import DailyTaskRoutes from "./routes/dailyTasks.js"
+import DailyTaskRoutes from "./routes/dailyTasks.js";
+import PlannerRoutes from "./routes/planner.js"
 import cookieParser from "cookie-parser";
 import express from "express";
 import cors from "cors";
@@ -25,6 +26,7 @@ mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.use('/api/auth',authenticationRoutes);
 app.use('/api/dailyTasks',DailyTaskRoutes);
+app.use('/api/planner',PlannerRoutes);
 
 app.listen(PORT,()=> {
     console.log(`Server running on port ${PORT}`);
