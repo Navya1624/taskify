@@ -65,7 +65,7 @@ router.post("/signin",async(req,res) => {
         );
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false, // true if HTTPS
+            secure: true, // true if HTTPS
             sameSite: "Lax", // or "Strict" or "None" (cross-site use)
             maxAge: 24 * 60 * 60 * 1000,
           });
