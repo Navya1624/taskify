@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './login.css'; // <- Create a CSS file or use Tailwind for styling
 
 const Login = () => {
   const navigate = useNavigate();
-  const [formData , setFormData] = useState({
+  const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
@@ -16,7 +15,7 @@ const Login = () => {
       ...prev,
       [name]: value
     }));
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +24,7 @@ const Login = () => {
       alert('Please fill in all fields');
       return;
     }
+
     try {
       const response = await axios.post('http://localhost:5000/api/auth/signin', formData, {
         withCredentials: true,
@@ -37,38 +37,51 @@ const Login = () => {
       console.error("Error signing in:", error.response?.data || error.message);
       alert(error.response?.data || "Signin failed!");
     }
-  }
+  };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-card">
-        <h2>Sign In</h2>
+    
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-8">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Sign In to Taskify</h2>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          className="input-field"
-        />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            onChange={handleChange}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          className="input-field"
-        />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
 
-        <button type="submit" className="login-button">Sign In</button>
+          <button
+            type="submit"
+            className="w-full bg-indigo-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition duration-300"
+          >
+            Sign In
+          </button>
 
-        <p className="signup-link">
-          Don't have an account? <span onClick={() => navigate("/signup")}>Sign Up</span>
-        </p>
-      </form>
+          <p className="text-center text-gray-600 text-sm">
+            Don't have an account?{' '}
+            <span
+              onClick={() => navigate("/signup")}
+              className="text-blue-500 hover:underline cursor-pointer"
+            >
+              Sign Up
+            </span>
+          </p>
+        </form>
+      </div>
     </div>
   );
-}
+};
 
 export default Login;
-

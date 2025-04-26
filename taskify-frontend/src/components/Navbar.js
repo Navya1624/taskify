@@ -1,53 +1,34 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate('/signin');
-  };
-
   return (
-    <AppBar position="static" color="primary">
-      <Toolbar>
-        <Typography
-          variant="h6"
-          component="div"
-          sx={{ flexGrow: 1, cursor: 'pointer' }}
-          onClick={() => navigate('/')}
-        >
-          Taskify
-        </Typography>
-
-        <Box>
-          <Button color="inherit" onClick={() => navigate('/')}>
-            Home
-          </Button>
-          <Button color="inherit" onClick={() => navigate('/Home/Tasks')}>
-            Tasks
-          </Button>
-          {!token ? (
-            <>
-              <Button color="inherit" onClick={() => navigate('/signin')}>
-                Login
-              </Button>
-              <Button color="inherit" onClick={() => navigate('/signup')}>
-                Signup
-              </Button>
-            </>
-          ) : (
-            <Button color="inherit" onClick={handleLogout}>
-              Logout
-            </Button>
-          )}
-        </Box>
-      </Toolbar>
-    </AppBar>
+    <nav style={{ 
+      background: '#10374A', 
+      padding: '1rem 2rem', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'space-between', 
+      color: '#fff', 
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+    }}>
+      <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: 'bold' }}>Taskify</h1>
+      <div style={{ display: 'flex', gap: '2rem' }}>
+        <Link to="/tasks" style={linkStyle}>Tasks</Link>
+        <Link to="/planner" style={linkStyle}>Planner</Link>
+        <Link to="/remainder" style={linkStyle}>Remainder</Link>
+        <Link to="/others" style={linkStyle}>Others</Link>
+        <Link to="/profile" style={linkStyle}>Profile</Link>
+      </div>
+    </nav>
   );
+};
+
+const linkStyle = {
+  color: '#fff', 
+  textDecoration: 'none', 
+  fontSize: '1rem', 
+  fontWeight: '500', 
+  transition: 'color 0.3s ease',
 };
 
 export default Navbar;

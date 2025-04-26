@@ -36,10 +36,7 @@ const Planner = () => {
       const result = response.data;
       alert(result.message || "Plan saved!");
 
-      // Add new plan to the list
       setPlans((prev) => [...prev, result.plan]);
-
-      // Reset form
       setTitle("");
       setDescription("");
       setShowForm(false);
@@ -50,50 +47,54 @@ const Planner = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-4">
-      <button
-        onClick={() => setShowForm(!showForm)}
-        className="bg-blue-600 text-white px-4 py-2 rounded mb-4"
-      >
-        + Add Plan
-      </button>
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">📅 My Planner</h1>
+
+      <div className="flex justify-end mb-6">
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="bg-[#005D5C] hover:bg-[#004746] text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300"
+        >
+          {showForm ? "Close" : "+ Add Plan"}
+        </button>
+      </div>
 
       {showForm && (
-        <div className="bg-white p-4 shadow-md rounded mb-4">
-          <h2 className="text-xl font-bold mb-2">Create Plan</h2>
+        <div className="bg-white p-6 shadow-lg rounded-lg mb-6 border border-gray-200">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-700">Create New Plan</h2>
           <input
             type="text"
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full border p-2 mb-2"
+            className="w-full border border-gray-300 rounded-md p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-[#005D5C]"
           />
           <textarea
             placeholder="Description / Notes"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full border p-2 mb-2"
+            className="w-full border border-gray-300 rounded-md p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-[#005D5C]"
             rows={4}
           />
           <button
             onClick={handleAddPlan}
-            className="bg-black text-white px-4 py-2 rounded"
+            className="bg-[#005D5C] hover:bg-[#004746] text-white font-semibold px-6 py-2 rounded-md transition duration-300"
           >
-            Save
+            Save Plan
           </button>
         </div>
       )}
 
-      <div>
+      <div className="space-y-4">
         {plans.length === 0 ? (
-          <p className="text-gray-500">No plans added yet.</p>
+          <p className="text-gray-500 text-center">No plans added yet.</p>
         ) : (
           plans.map((plan, index) => (
             <div
               key={index}
-              className="border p-4 mb-3 bg-gray-100 rounded shadow"
+              className="bg-gray-50 border border-gray-200 p-5 rounded-lg shadow-sm hover:shadow-md transition duration-300"
             >
-              <h3 className="font-semibold text-lg">{plan.title}</h3>
+              <h3 className="font-bold text-xl mb-2 text-[#005D5C]">{plan.title}</h3>
               <p className="text-gray-700">{plan.description}</p>
             </div>
           ))
