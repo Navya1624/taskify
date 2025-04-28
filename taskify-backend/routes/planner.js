@@ -2,6 +2,7 @@ import express from "express";
 import {Planner} from "../models/planner.js";
 import { authenticateToken } from "../middlewares/authMiddleware.js";
 import cookieParser from "cookie-parser";
+import { deletePlanner, updatePlanner,getPlanById } from "../controller/plannerController.js";
 
 const router=express.Router();
 router.use(cookieParser());
@@ -37,5 +38,9 @@ router.get("/plans",authenticateToken,async(req,res)=>{
         res.status(500).json({message: "Service error"});
     }
 })
+
+router.delete("/delete/:plannerId", authenticateToken, deletePlanner);
+router.put("/update/:plannerId",authenticateToken,updatePlanner);
+router.get("/plan/:plannerId",authenticateToken,getPlanById);
 
 export default router;

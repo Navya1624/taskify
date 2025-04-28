@@ -14,8 +14,8 @@ const Navbar = () => {
       <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: 'bold' }}>Taskify</h1>
       <div style={{ display: 'flex', gap: '2rem' }}>
         <Link to="/tasks" style={linkStyle}>Tasks</Link>
-        <Link to="/planner" style={linkStyle}>Planner</Link>
-        <Link to="/remainder" style={linkStyle}>Remainder</Link>
+        <Link to="Planner" style={linkStyle}>Planner</Link>
+        <Link to="Remainders" style={linkStyle}>Reminders</Link>
         <Link to="/others" style={linkStyle}>Others</Link>
         <Link to="/profile" style={linkStyle}>Profile</Link>
       </div>

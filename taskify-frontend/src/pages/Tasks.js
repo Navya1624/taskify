@@ -64,7 +64,7 @@ const Tasks = () => {
 
   const deleteTask = async (task_id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/dailyTasks/delete/${task_id}`);
+      await axios.delete(`http://localhost:5000/api/dailyTasks/delete/${task_id}`,{withCredentials: true} );
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== task_id));
     } catch (error) {
       console.error('Error while deleting the task', error);

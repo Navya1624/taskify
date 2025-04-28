@@ -6,6 +6,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import KanbanRoutes from "./routes/kanban.js"
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use('/api/auth',authenticationRoutes);
 app.use('/api/dailyTasks',DailyTaskRoutes);
 app.use('/api/planner',PlannerRoutes);
+app.use('/api/kanban',KanbanRoutes);
 
 app.listen(PORT,()=> {
     console.log(`Server running on port ${PORT}`);

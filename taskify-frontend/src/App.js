@@ -5,6 +5,7 @@ import Signup from './pages/Signup';
 import Tasks from './pages/Tasks';
 import Planner from './pages/Planner';
 import Layout from './components/Layout';
+import Remainder from './pages/Remainder';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
          <Route index element={<Tasks />} /> {/* Default "/" shows Tasks */}
           <Route path="Tasks" element={<Tasks />} />
           <Route path="Planner" element={<Planner />} />
+          <Route path="Remainders" element={<Remainder/>}/>
       </Route>
 
       {/* Catch-all redirect */}
