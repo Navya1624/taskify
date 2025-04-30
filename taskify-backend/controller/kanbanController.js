@@ -3,10 +3,7 @@ import { KanbanTask } from "../models/kanbanTask.js";
 const createTask =async (req,res)=>{
     try {
         const { title ,status,plannerId} = req.body;
-        console.log("navyaa");
-        console.log(plannerId);
         const task = new KanbanTask({ title,status,userId:req.userId,plannerId:plannerId });
-        console.log(task);
         await task.save();
         res.status(201).json(task);
       } catch (err) {

@@ -6,7 +6,8 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import KanbanRoutes from "./routes/kanban.js"
+import KanbanRoutes from "./routes/kanban.js";
+import ReminderRoutes from "./routes/reminder.js";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use('/api/auth',authenticationRoutes);
 app.use('/api/dailyTasks',DailyTaskRoutes);
 app.use('/api/planner',PlannerRoutes);
 app.use('/api/kanban',KanbanRoutes);
+app.use('/api/reminder',ReminderRoutes);
 
 app.listen(PORT,()=> {
     console.log(`Server running on port ${PORT}`);
